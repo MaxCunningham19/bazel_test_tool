@@ -1,2 +1,3 @@
-# bazel_test_tool
-A simple example project to learn about bazel, ruby, and react
+# Bazel Testing Project
+
+A simple example project to learn about Bazel, Ruby, Typescript, and React.
