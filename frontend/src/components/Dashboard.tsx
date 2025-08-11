@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import TestBox, { TestRun } from "./components/TestBox";
-import { getRunById, getRuns, getLatestRun, triggerTestRun } from "./api/api";
+import TestBox from "./TestBox";
+import { TestRun } from "../types";
+import { getLatestRun, triggerTestRun } from "../api/api";
 
 export default function Dashboard() {
   const [run, setRun] = useState<any>(null);
