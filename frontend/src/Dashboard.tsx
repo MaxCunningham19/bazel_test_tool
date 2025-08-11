@@ -1,0 +1,35 @@
+import React, { useEffect, useState } from "react";
+import TestBox, { TestRun } from "./components/TestBox";
+import { getRunById, getRuns, getLatestRun, triggerTestRun } from "./api/api";
+
+export default function Dashboard() {
+  const [run, setRun] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getLatestRun(3).then((data) => {
+      setRun(data.data);
+      console.log(data);
+    });
+  }, []);
+
+  const handleRunTests = async () => {
+    setLoading(true);
+    const data = await triggerTestRun();
+    setRun(data);
+    setLoading(false);
+  };
+
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <button onClick={handleRunTests} disabled={loading}>
+        {loading ? "Processing ..." : "Trigger tests"}
+      </button>
+      {run &&
+        run.map((run: TestRun) => {
+          return <TestBox key={run.run_id} run={run} />;
+        })}
+    </div>
+  );
+}
