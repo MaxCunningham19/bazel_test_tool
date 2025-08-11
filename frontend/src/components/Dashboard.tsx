@@ -10,14 +10,17 @@ export default function Dashboard() {
   useEffect(() => {
     getLatestRun(3).then((data) => {
       setRun(data.data);
-      console.log(data);
     });
   }, []);
 
   const handleRunTests = async () => {
     setLoading(true);
     const data = await triggerTestRun();
-    setRun(data);
+    if (data.status === 200) {
+      getLatestRun(3).then((data) => {
+        setRun(data.data);
+      });
+    }
     setLoading(false);
   };
 
