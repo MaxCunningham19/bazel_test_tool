@@ -1,0 +1,15 @@
+require 'active_record'
+require 'yaml'
+require 'rake'
+
+db_config = YAML.load_file('config/database.yml')
+ActiveRecord::Base.establish_connection(db_config['development'])
+
+namespace :db do
+  desc 'Migrate the database'
+  task :migrate do
+    migration_context = ActiveRecord::MigrationContext.new('db/migrate')
+    migration_context.migrate
+    puts "Migrations complete"
+  end
+end
