@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "questions",
+    srcs = ["questions.go"],
+    importpath = "local/quiz/questions",
+    visibility = ["//visibility:public"],
+)
+

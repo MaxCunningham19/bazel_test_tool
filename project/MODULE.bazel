@@ -1,0 +1,13 @@
+bazel_dep(name = "rules_go", version = "0.47.0")
+
+# Download and register a Go SDK (Bazel-managed)
+go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_download_sdk")
+go_sdk.download(version = "1.23.2")  # Pick your Go version
+
+use_repo(
+    go_sdk,
+    "go_sdk",
+)
+
+# Register Go toolchains
+use_extension("@rules_go//go:extensions.bzl", "go_register_toolchains")
