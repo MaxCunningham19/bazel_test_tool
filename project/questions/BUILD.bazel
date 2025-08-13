@@ -1,9 +1,15 @@
-load("@rules_go//go:def.bzl", "go_library")
+load("@rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "questions",
     srcs = ["questions.go"],
-    importpath = "local/quiz/questions",
+    importpath = "quiz/questions",
     visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "questions_test",
+    srcs = ["questions_test.go"],
+    embed = [":questions"],
 )
 

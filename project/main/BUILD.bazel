@@ -4,8 +4,9 @@ load("@rules_go//go:def.bzl", "go_binary")
 go_binary(
     name = "quiz",
     srcs = ["main.go"],
+    importpath = "quiz/main",
     deps = [
-        "//quiz",
-        "//questions",
+        "//quiz:quiz",
+        "//questions:questions",
     ]
 )

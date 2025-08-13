@@ -3,8 +3,7 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "quiz",
     srcs = ["quiz.go"],
-    importpath = "local/quiz/quiz",
-    deps = ["//questions"],
+    importpath = "quiz/quiz",  # matches module + folder
+    deps = ["//questions:questions"],
     visibility = ["//visibility:public"],
 )
-
