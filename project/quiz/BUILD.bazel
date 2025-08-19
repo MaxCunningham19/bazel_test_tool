@@ -12,4 +12,5 @@ go_test(
     name = "quiz_test",
     srcs = ["quiz_test.go"],
     embed = [":quiz"],
+    size = "small",
 )
