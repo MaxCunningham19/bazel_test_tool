@@ -1,8 +1,7 @@
 export interface TestRun {
-  run_id: number;
+  id: number;
   status: string;
-  flaky_tests: string[];
-  stable_tests: string[];
+  tests: string[];
   duration_seconds: number;
   finished_at: string;
 }

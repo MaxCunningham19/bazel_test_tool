@@ -10,9 +10,9 @@ export default function TestBox({ run }: TestBoxProps) {
   const [showStable, setShowStable] = useState(false);
 
   return (
-    <div className="test-box" id={run.run_id.toString()}>
+    <div className="test-box" id={String(run.id)}>
       <header className="test-box-header">
-        <h2>Run #{run.run_id ?? "N/A"}</h2>
+        <h2>Run #{run.id ?? "N/A"}</h2>
         <span className={`status status-${run.status.toLowerCase()}`}>{run.status}</span>
       </header>
 
@@ -28,12 +28,12 @@ export default function TestBox({ run }: TestBoxProps) {
       <section className="test-box-tests">
         <div>
           <button className="toggle-button" onClick={() => setShowFlaky((prev) => !prev)}>
-            Flaky Tests ({run.flaky_tests.length})
+            Flaky Tests ({run.tests.length})
           </button>
           {showFlaky &&
-            (run.flaky_tests.length > 0 ? (
+            (run.tests.length > 0 ? (
               <ul>
-                {run.flaky_tests.map((t) => (
+                {run.tests.map((t) => (
                   <li key={t}>{t}</li>
                 ))}
               </ul>
@@ -42,7 +42,7 @@ export default function TestBox({ run }: TestBoxProps) {
             ))}
         </div>
 
-        <div>
+        {/* <div>
           <button className="toggle-button" onClick={() => setShowStable((prev) => !prev)}>
             Stable Tests ({run.stable_tests.length})
           </button>
@@ -56,7 +56,7 @@ export default function TestBox({ run }: TestBoxProps) {
             ) : (
               <p>None</p>
             ))}
-        </div>
+        </div> */}
       </section>
     </div>
   );

@@ -7,8 +7,9 @@ class RunService
     stdout, stderr, status = Open3.capture3(cmd, chdir: "../project")
 
     tests = self.parse_tests(stdout)
+    run_status = status.success? ? "passed" : tests.any? { |test| test[:test_status] == "FAILED" } ? "failed" : "build_error"
     {
-      status: stderr.empty? ? (status.success ? "passed" : "failed") : "error",
+      status: run_status, 
       tests: tests, 
       started_at: started_at,
       finished_at: Time.now, 
@@ -43,6 +44,6 @@ class RunService
       status
     else 
       status[0..-2]
-    end
+    end.downcase
   end
 end

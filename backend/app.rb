@@ -4,6 +4,10 @@ require 'active_record'
 require_relative 'config/database'
 require_relative './app/controllers/runs_controller'
 require_relative './app/controllers/tests_controller'
+require_relative './app/models/run'
+require_relative './app/models/test'
+require_relative './app/models/link'
+
 
 class App < Sinatra::Base
   register Sinatra::CrossOrigin

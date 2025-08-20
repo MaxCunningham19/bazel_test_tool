@@ -2,10 +2,6 @@ require 'active_record'
 require 'securerandom'
 
 class Test < ActiveRecord::Base
-  self.primary_key = "id"
-
-  before_create :set_uuid
-
   has_many :links 
   has_many :runs, through: :links
 
@@ -26,10 +22,5 @@ class Test < ActiveRecord::Base
 
   def flaky?
     status == "flaky"
-  end
-
-  private 
-  def set_uuid
-    self.id ||= SecureRandom.uuid
   end
 end

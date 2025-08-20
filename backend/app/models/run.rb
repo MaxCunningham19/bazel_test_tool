@@ -2,10 +2,6 @@ require 'active_record'
 require 'securerandom'
 
 class Run < ActiveRecord::Base
-  self.primary_key = "id"
-
-  before_create :set_uuid
-
   has_many :links
   has_many :tests, through: :links  
 
@@ -18,9 +14,4 @@ class Run < ActiveRecord::Base
   scope :build_error, -> { where(status: "build_error") }
   scope :started, -> { where(status: "started") }
   scope :latest, ->(lim) { order(created_at: :desc).limit(lim) }
-
-  private
-  def set_uuid
-    self.id ||= SecureRandom.uuid
-  end
 end

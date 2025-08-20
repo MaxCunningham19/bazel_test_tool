@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'json'
 require_relative '../models/run'
+require_relative '../services/run_service'
 
 class RunsController < Sinatra::Base
   register Sinatra::CrossOrigin
@@ -21,16 +22,15 @@ class RunsController < Sinatra::Base
 
     runs.map do |run|
       {
-        run_id: run.run_id,
+        id: run.id,
         status: run.status,
         created_at: run.created_at,
         tests: run.links.map do |link|
           {
-            test_id: link.test.test_id,
+            test_id: link.test.id,
             name: link.test.name,
-            status: link.status,        # <-- status from the join table!
-            duration_seconds: link.duration_seconds
-            # any other link or test attributes you want here
+            status: link.status,
+            duration_seconds: link.completed_at
           }
         end
       }
@@ -49,15 +49,31 @@ class RunsController < Sinatra::Base
   end
 
   post '/run' do
-    data = JSON.parse(request.body.read)
-    run = Run.new(data)
-
-    if run.save
-      status 201
-      run.to_json
-    else
-      status 422
-      { errors: run.errors.full_messages }.to_json
+  data = JSON.parse(request.body.read)
+  attempts = data['test_attempts'] || 1
+  result = RunService.trigger_run(attempts)
+  puts result
+  run = Run.create!(
+    status: result[:status] == "error" ? "build_error" : result[:status],
+    duration_seconds: (result[:finished_at] - result[:started_at]).to_i
+  )
+  
+  result[:tests].each do |test_info|
+    test = Test.find_or_create_by!(name: test_info[:name]) do |t|
+      t.status = test_info[:test_status]
     end
+    test.update!(status: test_info[:test_status])
+  
+    Link.create!(
+      run: run,
+      test: test,
+      status: test_info[:test_status]
+    )
   end
+
+  content_type :json
+  run.to_json(include: { tests: { only: [:id, :name, :status] } })
+end
+
+
 end

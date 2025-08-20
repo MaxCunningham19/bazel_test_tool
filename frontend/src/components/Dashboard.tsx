@@ -15,7 +15,7 @@ export default function Dashboard() {
 
   const handleRunTests = async () => {
     setLoading(true);
-    const data = await triggerTestRun();
+    const data = await triggerTestRun(3);
     if (data.status === 200) {
       getLatestRun(3).then((data) => {
         setRun(data.data);
@@ -32,7 +32,7 @@ export default function Dashboard() {
       </button>
       {run &&
         run.map((run: TestRun) => {
-          return <TestBox key={run.run_id} run={run} />;
+          return <TestBox key={run.id} run={run} />;
         })}
     </div>
   );
