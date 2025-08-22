@@ -4,8 +4,8 @@ class CreateLinks < ActiveRecord::Migration[7.0]
       t.primary_key :id
       t.string :run_id, null: false
       t.string :test_id, null: false
-      t.string :status
-      t.datetime :completed_at
+      t.string :status, null: false
+      t.float :test_duration
     end
 
     add_foreign_key :links, :runs, column: :run_id, primary_key: :id

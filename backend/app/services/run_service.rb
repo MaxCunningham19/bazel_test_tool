@@ -12,7 +12,7 @@ class RunService
       status: run_status, 
       tests: tests, 
       started_at: started_at,
-      finished_at: Time.now, 
+      completed_at: Time.now, 
       error_message: stderr.strip,
     }
   end
@@ -24,9 +24,10 @@ class RunService
 
   def self.parse_test(test_words) 
     {
-      name: test_words[0],
+      name: test_words[0].strip,
       test_status: self.parse_status(test_words[1]),
-      test_duration: test_words[test_words.length - 1]
+      test_duration: self.parse_duration(test_words[test_words.length - 1]),
+      test_path: test_words[0].strip
     }
   end
 
@@ -45,5 +46,10 @@ class RunService
     else 
       status[0..-2]
     end.downcase
+  end
+
+  private 
+  def self.parse_duration(duration_string) 
+    duration_string.to_f
   end
 end

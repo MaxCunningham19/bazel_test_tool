@@ -25,12 +25,15 @@ class RunsController < Sinatra::Base
         id: run.id,
         status: run.status,
         created_at: run.created_at,
+        completed_at: run.completed_at,
+        duration_seconds: run.duration_seconds,
         tests: run.links.map do |link|
           {
             test_id: link.test.id,
             name: link.test.name,
+            path: link.test.path,
             status: link.status,
-            duration_seconds: link.completed_at
+            duration_seconds: link.test_duration
           }
         end
       }
@@ -55,19 +58,22 @@ class RunsController < Sinatra::Base
   puts result
   run = Run.create!(
     status: result[:status] == "error" ? "build_error" : result[:status],
-    duration_seconds: (result[:finished_at] - result[:started_at]).to_i
+    started_at: result[:started_at],
+    completed_at: result[:completed_at],
+    duration_seconds: result[:completed_at] - result[:started_at]
   )
   
   result[:tests].each do |test_info|
-    test = Test.find_or_create_by!(name: test_info[:name]) do |t|
-      t.status = test_info[:test_status]
-    end
-    test.update!(status: test_info[:test_status])
-  
+    test = Test.find_or_initialize_by(name: test_info[:name])
+    test.status = test_info[:test_status]
+    test.path ||= test_info[:test_path]
+    test.save!
+
     Link.create!(
       run: run,
       test: test,
-      status: test_info[:test_status]
+      status: test_info[:test_status],
+      test_duration: test_info[:test_duration]
     )
   end
 
