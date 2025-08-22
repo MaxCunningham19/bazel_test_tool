@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import TestBox from "./TestBox";
-import { TestRun } from "../types";
+import { Test, Run } from "../types";
 import { getLatestRun, triggerTestRun } from "../api/api";
+import RunBox from "./Run";
 
 export default function Dashboard() {
   const [run, setRun] = useState<any>(null);
@@ -31,8 +32,8 @@ export default function Dashboard() {
         {loading ? "Processing ..." : "Trigger tests"}
       </button>
       {run &&
-        run.map((run: TestRun) => {
-          return <TestBox key={run.id} run={run} />;
+        run.map((run: Run) => {
+          return <RunBox key={run.id} run={run} />;
         })}
     </div>
   );

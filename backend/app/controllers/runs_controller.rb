@@ -24,7 +24,7 @@ class RunsController < Sinatra::Base
       {
         id: run.id,
         status: run.status,
-        created_at: run.created_at,
+        started_at: run.started_at,
         completed_at: run.completed_at,
         duration_seconds: run.duration_seconds,
         tests: run.links.map do |link|

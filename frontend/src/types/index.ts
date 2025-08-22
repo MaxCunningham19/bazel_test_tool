@@ -1,1 +1,2 @@
-export * from "./TestRun";
+export * from "./Test";
+export * from "./Run";
